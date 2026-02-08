@@ -22,10 +22,10 @@
         <div class="form-group">
           <label for="type">Document Type</label>
           <select name="type" id="type">
-            <option value="employeeHandbook" <%= form.type==="employeeHandbook" ? "selected" : "" %>>
+            <option value="employeeHandbook" <%=form.type==="employeeHandbook" ? "selected" : "" %>>
               Employee Handbook
             </option>
-            <option value="contractorAgreement" <%= form.type==="contractorAgreement" ? "selected" : "" %>>
+            <option value="contractorAgreement" <%=form.type==="contractorAgreement" ? "selected" : "" %>>
               Contractor Agreement
             </option>
           </select>
@@ -40,10 +40,10 @@
           <div>
             <label for="size">Business Size</label>
             <select name="size" id="size">
-              <option value="1-10"   <%= form.size==="1-10"   ? "selected" : "" %>>1-10</option>
-              <option value="11-50"  <%= form.size==="11-50"  ? "selected" : "" %>>11-50</option>
-              <option value="51-100" <%= form.size==="51-100" ? "selected" : "" %>>51-100</option>
-              <option value="101-500"<%= form.size==="101-500"? "selected" : "" %>>101-500</option>
+              <option value="1-10" <%=form.size==="1-10" ? "selected" : "" %>>1-10</option>
+              <option value="11-50" <%=form.size==="11-50" ? "selected" : "" %>>11-50</option>
+              <option value="51-100" <%=form.size==="51-100" ? "selected" : "" %>>51-100</option>
+              <option value="101-500" <%=form.size==="101-500" ? "selected" : "" %>>101-500</option>
             </select>
           </div>
 
@@ -55,9 +55,39 @@
 
         <div class="form-group">
           <label for="industry">Industry</label>
-          <input name="industry" id="industry" value="<%= form.industry %>">
+          <select name="industry" id="industry">
+            <option value="professionalServices" <%=form.industry==="professionalServices" ? "selected" : "" %>>
+              Professional Services (Consulting, Legal, Accounting)
+            </option>
+            <option value="retail" <%=form.industry==="retail" ? "selected" : "" %>>
+              Retail
+            </option>
+            <option value="restaurant" <%=form.industry==="restaurant" ? "selected" : "" %>>
+              Restaurant / Food Service
+            </option>
+            <option value="healthcare" <%=form.industry==="healthcare" ? "selected" : "" %>>
+              Healthcare / Wellness
+            </option>
+            <option value="construction" <%=form.industry==="construction" ? "selected" : "" %>>
+              Construction / Trades
+            </option>
+            <option value="hospitality" <%=form.industry==="hospitality" ? "selected" : "" %>>
+              Hospitality (Hotels, Events, Venues)
+            </option>
+            <option value="entertainment" <%=form.industry==="entertainment" ? "selected" : "" %>>
+              Media / Music / Entertainment
+            </option>
+            <option value="childcare" <%=form.industry==="childcare" ? "selected" : "" %>>
+              Childcare / Education
+            </option>
+            <option value="technology" <%=form.industry==="technology" ? "selected" : "" %>>
+              Technology / SaaS
+            </option>
+            <option value="logistics" <%=form.industry==="logistics" ? "selected" : "" %>>
+              Logistics / Transportation
+            </option>
+          </select>
         </div>
-
         <button type="submit" class="btn-primary">Generate Document</button>
       </form>
 
@@ -69,11 +99,11 @@
             <pre><%= preview %></pre>
           </div>
         </div>
-      <% } else { %>
-        <div class="card preview-placeholder">
-          <p>No document yet. Complete the form and click "Generate Document".</p>
-        </div>
-      <% } %>
+        <% } else { %>
+          <div class="card preview-placeholder">
+            <p>No document yet. Complete the form and click "Generate Document".</p>
+          </div>
+          <% } %>
     </div>
   </div>
 </body>
