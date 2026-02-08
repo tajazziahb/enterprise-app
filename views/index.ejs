@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>
+    <%= title %>
+  </title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body class="page">
+  <div class="container">
+    <h1 class="title">
+      <%= title %>
+    </h1>
+    <p class="subtitle">for Small Businesses</p>
+
+    <div class="content-grid">
+      <!-- Left Side: Form -->
+      <form action="/generate" method="post" class="card form-card">
+        <div class="form-group">
+          <label for="type">Document Type</label>
+          <select name="type" id="type">
+            <option value="employeeHandbook" <%= form.type==="employeeHandbook" ? "selected" : "" %>>
+              Employee Handbook
+            </option>
+            <option value="contractorAgreement" <%= form.type==="contractorAgreement" ? "selected" : "" %>>
+              Contractor Agreement
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="businessName">Business Name</label>
+          <input name="businessName" id="businessName" value="<%= form.businessName %>">
+        </div>
+
+        <div class="form-group grid-2">
+          <div>
+            <label for="size">Business Size</label>
+            <select name="size" id="size">
+              <option value="1-10"   <%= form.size==="1-10"   ? "selected" : "" %>>1-10</option>
+              <option value="11-50"  <%= form.size==="11-50"  ? "selected" : "" %>>11-50</option>
+              <option value="51-100" <%= form.size==="51-100" ? "selected" : "" %>>51-100</option>
+              <option value="101-500"<%= form.size==="101-500"? "selected" : "" %>>101-500</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="location">Location</label>
+            <input name="location" id="location" value="<%= form.location %>">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="industry">Industry</label>
+          <input name="industry" id="industry" value="<%= form.industry %>">
+        </div>
+
+        <button type="submit" class="btn-primary">Generate Document</button>
+      </form>
+
+      <!-- Right Side: Preview -->
+      <% if (preview) { %>
+        <div class="card preview-card">
+          <h2 class="preview-title">Preview</h2>
+          <div class="preview-content">
+            <pre><%= preview %></pre>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card preview-placeholder">
+          <p>No document yet. Complete the form and click "Generate Document".</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+
+</html>
