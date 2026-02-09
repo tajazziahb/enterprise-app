@@ -1,0 +1,155 @@
+<%
+  const title = 'Classes';
+%>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <h1 class="nav-brand">Dance Studio Dashboard</h1>
+      <div class="nav-links">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/classes" class="nav-link">Classes</a>
+        <a href="/instructors" class="nav-link">Instructors</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+    <% } %>
+    
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <div class="container">
+      <h2 class="page-header">Classes</h2>
+
+      <!-- Add Class Form -->
+      <div class="card">
+        <h3 class="card-title">Add New Class</h3>
+        <form action="/classes" method="post" class="form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Class Name</label>
+              <input type="text" id="name" name="name" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="style">Style</label>
+              <input type="text" id="style" name="style" class="form-input" placeholder="e.g., Ballet, Jazz, Hip-Hop" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dayOfWeek">Day of Week</label>
+              <select id="dayOfWeek" name="dayOfWeek" class="form-input" required>
+                <option value="">Select day</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="startTime">Start Time</label>
+              <input type="time" id="startTime" name="startTime" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="endTime">End Time</label>
+              <input type="time" id="endTime" name="endTime" class="form-input" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="room">Room</label>
+              <input type="text" id="room" name="room" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="capacity">Capacity</label>
+              <input type="number" id="capacity" name="capacity" class="form-input" min="1" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Add Class</button>
+        </form>
+      </div>
+
+      <!-- Classes List -->
+      <div class="card">
+        <h3 class="card-title">All Classes</h3>
+        <% if (classes.length === 0) { %>
+          <p class="empty-state">No classes yet. Add your first class above.</p>
+        <% } else { %>
+          <div class="classes-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Style</th>
+                  <th>Day</th>
+                  <th>Time</th>
+                  <th>Room</th>
+                  <th>Capacity</th>
+                  <th>Instructor</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% classes.forEach(classItem => { %>
+                  <tr>
+                    <td><strong><%= classItem.name %></strong></td>
+                    <td><%= classItem.style %></td>
+                    <td><%= classItem.dayOfWeek %></td>
+                    <td><%= classItem.startTime %> - <%= classItem.endTime %></td>
+                    <td><%= classItem.room %></td>
+                    <td><%= classItem.capacity %></td>
+                    <td>
+                      <% 
+                        const instructor = instructors.find(i => i.id === classItem.instructorId);
+                        if (instructor) { 
+                      %>
+                        <span class="badge badge-assigned"><%= instructor.fullName %></span>
+                      <% } else { %>
+                        <span class="badge badge-unassigned">Unassigned</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <form action="/classes/<%= classItem.id %>/assign" method="post" class="assign-form">
+                        <select name="instructorId" class="form-input form-input-small">
+                          <option value="">Unassign</option>
+                          <% instructors.forEach(instructor => { %>
+                            <option value="<%= instructor.id %>" <%= classItem.instructorId === instructor.id ? 'selected' : '' %>>
+                              <%= instructor.fullName %>
+                            </option>
+                          <% }); %>
+                        </select>
+                        <button type="submit" class="btn-secondary btn-small">Assign</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
