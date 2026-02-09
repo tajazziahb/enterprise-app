@@ -1,0 +1,125 @@
+<%
+  const title = 'Instructors';
+%>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <h1 class="nav-brand">Dance Studio Dashboard</h1>
+      <div class="nav-links">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/classes" class="nav-link">Classes</a>
+        <a href="/instructors" class="nav-link">Instructors</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+    <% } %>
+    
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <div class="container">
+      <h2 class="page-header">Instructors</h2>
+
+      <!-- Add Instructor Form -->
+      <div class="card">
+        <h3 class="card-title">Add New Instructor</h3>
+        <form action="/instructors" method="post" class="form">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label for="styles">Styles (comma-separated)</label>
+            <input 
+              type="text" 
+              id="styles" 
+              name="styles" 
+              class="form-input" 
+              placeholder="e.g., Ballet, Jazz, Contemporary"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Availability Days</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Monday" />
+                Monday
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Tuesday" />
+                Tuesday
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Wednesday" />
+                Wednesday
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Thursday" />
+                Thursday
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Friday" />
+                Friday
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Saturday" />
+                Saturday
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="availabilityDays" value="Sunday" />
+                Sunday
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Add Instructor</button>
+        </form>
+      </div>
+
+      <!-- Instructors List -->
+      <div class="card">
+        <h3 class="card-title">All Instructors</h3>
+        <% if (instructors.length === 0) { %>
+          <p class="empty-state">No instructors yet. Add your first instructor above.</p>
+        <% } else { %>
+          <div class="instructors-grid">
+            <% instructors.forEach(instructor => { %>
+              <div class="instructor-card">
+                <h4 class="instructor-name"><%= instructor.fullName %></h4>
+                <% if (instructor.styles.length > 0) { %>
+                  <div class="instructor-detail">
+                    <strong>Styles:</strong> <%= instructor.styles.join(', ') %>
+                  </div>
+                <% } %>
+                <% if (instructor.availabilityDays.length > 0) { %>
+                  <div class="instructor-detail">
+                    <strong>Available:</strong> <%= instructor.availabilityDays.join(', ') %>
+                  </div>
+                <% } %>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

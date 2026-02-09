@@ -1,52 +1,37 @@
+// server.js
+// Dance Studio Operations Dashboard
+
 const express = require('express');
 const path = require('path');
-const { buildProfile, generateEmployeeHandbook, generateContractorAgreement } = require('./lib/employeeHandbook.js');
 
+// Route modules
+const dashboardRoutes = require('./routes/dashboard');
+const classesRoutes = require('./routes/classes');
+const instructorsRoutes = require('./routes/instructors');
+const announcementsRoutes = require('./routes/announcements');
 
 const app = express();
+
+// View engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")))
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.get('/', (req, res) => {
-    res.render('index', {
-        title: "Document Generator",
-        preview: null,
-        form: {
-            type: "employeeHandbook",
-            businessName: "",
-            size: "1-10",
-            industry: "professionalServices",
-            location: "",
-        }
-    });
-})
-
-app.post('/generate', (req, res) => {
-    const profile = buildProfile(req.body);
-
-    let preview = null;
-
-    if (profile.documentType === "contractorAgreement") {
-        preview = generateContractorAgreement(profile);
-    } else {
-        preview = generateEmployeeHandbook(profile);
-    }
-
-    res.render('index', {
-        title: "Document Generator",
-        preview,
-        form: {
-            type: req.body.type || "employeeHandbook",
-            businessName: req.body.businessName || "",
-            size: req.body.size || "1-10",
-            location: req.body.location || "",
-            industry: req.body.industry || "professionalServices",
-        },
-    });
+  res.redirect('/dashboard');
 });
 
+app.use('/dashboard', dashboardRoutes);
+app.use('/classes', classesRoutes);
+app.use('/instructors', instructorsRoutes);
+app.use('/announcements', announcementsRoutes);
+
+// Start server
 const port = process.env.PORT || 4000;
-app.listen(port, () => console.log('We are live folks 🔥 !"'));
+app.listen(port, () => {
+  console.log(`Dance Studio Dashboard running on port ${port}`);
+});

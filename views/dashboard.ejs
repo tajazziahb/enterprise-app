@@ -1,0 +1,117 @@
+<%
+  const title = 'Dashboard';
+%>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <h1 class="nav-brand">Dance Studio Dashboard</h1>
+      <div class="nav-links">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/classes" class="nav-link">Classes</a>
+        <a href="/instructors" class="nav-link">Instructors</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+    <% } %>
+    
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <div class="container">
+      <h2 class="page-header">Dashboard</h2>
+
+      <div class="dashboard-grid">
+        <!-- Classes Summary Card -->
+        <div class="card">
+          <h3 class="card-title">Classes Summary</h3>
+          <div class="summary-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Classes</span>
+              <span class="stat-value"><%= classesSummary.total %></span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Assigned</span>
+              <span class="stat-value stat-assigned"><%= classesSummary.assigned %></span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Unassigned</span>
+              <span class="stat-value stat-unassigned"><%= classesSummary.unassigned %></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructors Card -->
+        <div class="card">
+          <h3 class="card-title">Instructors</h3>
+          <% if (instructors.length === 0) { %>
+            <p class="empty-state">No instructors yet</p>
+          <% } else { %>
+            <ul class="instructor-list">
+              <% instructors.forEach(instructor => { %>
+                <li class="instructor-item">
+                  <strong><%= instructor.fullName %></strong>
+                  <% if (instructor.styles.length > 0) { %>
+                    <span class="instructor-styles">
+                      <%= instructor.styles.join(', ') %>
+                    </span>
+                  <% } %>
+                </li>
+              <% }); %>
+            </ul>
+          <% } %>
+        </div>
+
+        <!-- Announcements Card -->
+        <div class="card">
+          <h3 class="card-title">Announcements</h3>
+          <% if (announcements.length === 0) { %>
+            <p class="empty-state">No announcements</p>
+          <% } else { %>
+            <div class="announcements-feed">
+              <% announcements.forEach(announcement => { %>
+                <div class="announcement-item">
+                  <p class="announcement-message"><%= announcement.message %></p>
+                  <span class="announcement-date">
+                    <%= new Date(announcement.createdAt).toLocaleString() %>
+                  </span>
+                </div>
+              <% }); %>
+            </div>
+          <% } %>
+          
+          <form action="/announcements" method="post" class="announcement-form">
+            <div class="form-group">
+              <label for="announcement-message">New Announcement</label>
+              <textarea 
+                id="announcement-message" 
+                name="message" 
+                class="form-input" 
+                rows="3" 
+                placeholder="Enter announcement message..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Post Announcement</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
